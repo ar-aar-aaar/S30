@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>10 cosas que odio de ti</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Burn-book vibe fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&family=Special+Elite&family=Bangers&family=Archivo+Black&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&family=Special+Elite&family=Bangers&family=Archivo+Black&family=Caveat:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: rgb(110, 19, 41);
+            --shadow: rgba(0, 0, 0, 0.38);
+            --ink: rgb(15, 15, 20);
+            --ink2: rgb(55, 55, 70);
+
+            /* cover aspect ratio (your image) */
+            --cover-w: 1366;
+            --cover-h: 2047;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: start;
+            padding: 24px;
+            padding-top: 80px;
+
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            overflow-x: hidden;
+            color-scheme: light;
+
+            background:
+                radial-gradient(900px 700px at 20% 10%, rgba(255, 45, 134, 0.22) 0%, rgba(255, 45, 134, 0) 55%),
+                radial-gradient(900px 700px at 80% 20%, rgba(255, 118, 182, 0.18) 0%, rgba(255, 118, 182, 0) 58%),
+                radial-gradient(1200px 900px at 50% 25%, #1b1b24 0%, #0b0b10 55%, #07070b 100%);
+        }
+
+        /* faint pink paper texture under everything */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+
+            /* “paper fibers” + soft crumple noise */
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='700' height='700' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"),
+                linear-gradient(180deg, rgba(255, 194, 218, 0.18) 0%, rgba(255, 224, 237, 0.10) 60%, rgba(255, 194, 218, 0.14) 100%);
+
+            background-size: 700px 700px, cover;
+            background-repeat: repeat, no-repeat;
+
+            mix-blend-mode: soft-light;
+            opacity: 0.35;
+            filter: saturate(115%);
+        }
+
+        /* subtle grain + sparkles overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+
+            /* sparkles + grain (SVG data) */
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cg fill='white' fill-opacity='.10'%3E%3Ccircle cx='70' cy='90' r='1.2'/%3E%3Ccircle cx='210' cy='140' r='1.0'/%3E%3Ccircle cx='410' cy='110' r='1.1'/%3E%3Ccircle cx='520' cy='210' r='1.0'/%3E%3Ccircle cx='130' cy='320' r='1.0'/%3E%3Ccircle cx='320' cy='360' r='1.1'/%3E%3Ccircle cx='520' cy='420' r='1.2'/%3E%3Ccircle cx='80' cy='520' r='1.0'/%3E%3Ccircle cx='260' cy='520' r='1.1'/%3E%3Ccircle cx='420' cy='520' r='1.0'/%3E%3C/g%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+
+            background-size: 520px 520px, 220px 220px;
+            background-repeat: repeat;
+            mix-blend-mode: overlay;
+            opacity: 0.9;
+        }
+
+        /* ensure your UI sits above the overlay */
+        .wrap,
+        .top-nav,
+        .player {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* ---- IMPORTANT: keep flipbook layers below the fixed player ---- */
+        #book {
+            position: relative;
+            z-index: 1;
+        }
+
+        .stf__parent,
+        .stf__wrapper {
+            z-index: 1 !important;
+        }
+
+        .wrap {
+            width: min(980px, 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* ✅ single-page portrait book container, respecting cover aspect ratio */
+        #book {
+            width: min(420px, 90vw);
+            aspect-ratio: calc(var(--cover-w) / var(--cover-h));
+            height: auto;
+            filter: drop-shadow(0 28px 60px var(--shadow));
+        }
+
+        /* base page */
+        .page {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* cover page full-bleed */
+        .page.cover {
+            background: #000;
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* ===== Burn Book inner page look ===== */
+        .page:not(.cover) {
+            background: linear-gradient(180deg, #ffc2da 0%, #ffe0ed 100%);
+            box-shadow:
+                inset 0 0 0 1px rgba(0, 0, 0, 0.09),
+                inset 0 -18px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        /* doodles overlay (SVG) */
+        .page:not(.cover)::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            mix-blend-mode: multiply;
+
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            /* ✅ Robust SVG background (base64, won't break on copy/paste) */
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MDAiIGhlaWdodD0iMTAwMCIgdmlld0JveD0iMCAwIDcwMCAxMDAwIj4KPGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utb3BhY2l0eT0iMC43NSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgo8cGF0aCBkPSJNNDUgMTMwYzQwLTMwIDkwLTMwIDEzMCAwIi8+CjxwYXRoIGQ9Ik03MCAxNjVjMzUtMjUgODAtMjUgMTE1IDAiLz4KPHBhdGggZD0iTTU2MCAxMzBjMzUgMjAgNTUgNjAgNDUgMTA1Ii8+CjxwYXRoIGQ9Ik01NjAgMTY1YzI1IDE1IDM1IDQwIDMwIDcwIi8+CjxwYXRoIGQ9Ik05MCA4MjBjNjAgNDAgMTQwIDQwIDIwMCAwIi8+CjxwYXRoIGQ9Ik0xMDUgODYwYzU1IDM1IDEyMCAzNSAxNzAgMCIvPgo8cGF0aCBkPSJNTTMwIDgyMGM1MCAzMCA5MCA4MCA3MCAxNDAiLz4KPHBhdGggZD0iTTQ5NSA4ODVjNDUgMzAgODAgNjAgNzAgMTA1Ii8+CjxwYXRoIGQ9Ik05NSAzNDBjNDAgMTAgNTUgMzUgNDAgNzAtMTUgMzAtNTAgNDAtODAgMjAiLz4KPHBhdGggZD0iTTYwNSAzNTVjLTQ1IDEwLTcwIDMwLTcwIDcwIDAgNDAgMzUgNzAgODUgNTUiLz4KPHBhdGggZD0iTTM1MCA3MGwxMiAyNSAyNyA0LTIwIDIwIDUgMjgtMjQtMTMtMjQgMTMgNS0yOC0yMC0yMCAyNy00eiIvPgo8cGF0aCBkPSJNNTIwIDU2MGMtMzUgMTAtNTUgMzUtNDAgNjUgMTAgMjUgNDAgMzAgNjUgMTUiLz4KPHBhdGggZD0iTTE3MCA1NjBjMzUgMTAgNTUgMzUgNDAgNjUtMTAgMjUtNDAgMzAtNjUgMTUiLz4KPHBhdGggZD0iTTMyMCA5MjBjMjAtMjUgNDUtMjUgNjUgMCAxMCAxMCAxMCAzMC01IDQwLTE1IDEwLTM1IDAtNDUtMTUtMTAgMTUtMzAgMjUtNDUgMTUtMTUtMTAtMTUtMzAtNS00MHoiLz4KPC9nPjwvc3ZnPg==");
+        }
+
+
+        /* dashed scrapbook border */
+        .page:not(.cover)::after {
+            content: "";
+            position: absolute;
+            inset: 14px;
+            border-radius: 10px;
+            border: 2px dashed rgba(0, 0, 0, 0.18);
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        .inner {
+            width: 100%;
+            height: 100%;
+            padding: 26px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            color: var(--ink);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* faux tape corners */
+        .inner::before,
+        .inner::after {
+            content: "";
+            position: absolute;
+            width: 86px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        .inner::before {
+            top: 12px;
+            left: 12px;
+            transform: rotate(-12deg);
+        }
+
+        .inner::after {
+            bottom: 12px;
+            right: 12px;
+            transform: rotate(10deg);
+        }
+
+        .num {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.82);
+            color: #fff;
+            font-weight: 900;
+            letter-spacing: 0.10em;
+            font-size: 12px;
+            transform: rotate(-2deg);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.22);
+        }
+
+        .text {
+            font-family: "Permanent Marker", cursive;
+            font-size: clamp(20px, 2.6vw, 30px);
+            line-height: 1.15;
+            letter-spacing: 0.2px;
+            color: #141414;
+            transform: rotate(-0.3deg);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .sub {
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px dashed rgba(0, 0, 0, 0.18);
+            padding: 10px 12px;
+            border-radius: 10px;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.10);
+
+            /* handwritten contrast */
+            font-family: "Caveat", cursive;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            line-height: 1.15;
+            color: rgba(0, 0, 0, 0.70);
+
+            transform: rotate(-0.4deg);
+        }
+
+
+
+        /* ===== Music toggle (FIXED, always visible) ===== */
+
+        /* ===== Ransom-note / collage text ===== */
+
+        .collage {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 8px;
+            align-items: baseline;
+            margin-top: 6px;
+        }
+
+        .cut {
+            display: inline-block;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+            transform: rotate(var(--r, -2deg));
+            transform-origin: center;
+            user-select: none;
+            line-height: 1.0;
+            letter-spacing: 0.4px;
+            font-weight: 900;
+            font-size: clamp(18px, 2.6vw, 28px);
+        }
+
+        .cut.white {
+            background: #fff;
+            color: #111;
+        }
+
+        .cut.black {
+            background: #111;
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .cut.pink {
+            background: #ffd1e6;
+            color: #111;
+        }
+
+        .cut.paper {
+            background: #fbf7ef;
+            color: #111;
+        }
+
+        .cut.hotpink-bg {
+            background: var(--hotpink);
+            color: #fff;
+            border-color: rgba(0, 0, 0, 0.10);
+        }
+
+        .cut.hotpink-text {
+            background: #fff;
+            color: var(--hotpink);
+            border-color: rgba(255, 45, 134, 0.35);
+            box-shadow:
+                0 12px 24px rgba(0, 0, 0, 0.16),
+                0 0 0 2px rgba(255, 45, 134, 0.18);
+        }
+
+        .cut.marker {
+            font-family: "Permanent Marker", cursive;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .cut.type {
+            font-family: "Special Elite", ui-monospace, monospace;
+            font-weight: 400;
+        }
+
+        .cut.bold {
+            font-family: "Archivo Black", system-ui, sans-serif;
+        }
+
+        .cut.pop {
+            font-family: "Bangers", cursive;
+            letter-spacing: 0.9px;
+        }
+
+        .cut.small {
+            font-size: clamp(16px, 2.0vw, 22px);
+        }
+
+        .cut.big {
+            font-size: clamp(22px, 3.0vw, 34px);
+        }
+
+        .sub {
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px dashed rgba(0, 0, 0, 0.18);
+            padding: 10px 12px;
+            border-radius: 10px;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.10);
+        }
+
+        /* ===== Bottom Spotify-esque Player (Burn Book colors) ===== */
+        .player {
+            position: fixed;
+            left: 50%;
+            bottom: 16px;
+            transform: translateX(-50%) translateY(18px);
+            opacity: 0;
+            pointer-events: none;
+
+            width: min(980px, calc(100% - 32px));
+            padding: 12px 12px;
+            border-radius: 18px;
+
+            /* Burn Book palette */
+            background: rgba(255, 224, 237, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.10);
+
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(12px) saturate(120%);
+            -webkit-backdrop-filter: blur(12px) saturate(120%);
+
+            z-index: 2147483647 !important;
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        body.player-visible .player {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Layout */
+        .player--spotify {
+            display: grid;
+            grid-template-columns: 56px 1fr 56px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Thumb */
+        .player__thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 55%),
+                linear-gradient(180deg, #ffc2da 0%, #ffe0ed 100%);
+            position: relative;
+        }
+
+        .player__thumb::after {
+            content: "💋";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            opacity: 0.9;
+        }
+
+        /* Meta */
+        .player__title {
+            font-weight: 900;
+            color: rgb(18, 18, 22);
+            font-size: 14px;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player__artist {
+            margin-top: 2px;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.55);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player__progress {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: 42px 1fr 42px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .player__time {
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(0, 0, 0, 0.55);
+            text-align: center;
+        }
+
+        /* ===== Mobile browser default orange styling fixes ===== */
+        .player__seek {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+            /* we'll draw track ourselves */
+            outline: none;
+        }
+
+        /* Track */
+        .player__seek::-webkit-slider-runnable-track {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(110, 19, 41, 0.25);
+        }
+
+        .player__seek::-moz-range-track {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(110, 19, 41, 0.25);
+        }
+
+        /* Filled portion (Firefox) */
+        .player__seek::-moz-range-progress {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(110, 19, 41, 0.85);
+        }
+
+        /* Thumb */
+        .player__seek::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgb(110, 19, 41);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+            margin-top: -5px;
+            /* centers thumb on 6px track */
+        }
+
+        .player__seek::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgb(110, 19, 41);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Custom scrubber (no native styling at all) */
+        .seek {
+            width: 100%;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .seek__track {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(110, 19, 41, 0.25);
+        }
+
+        .seek__fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 6px;
+            border-radius: 999px;
+            width: 0%;
+            background: rgba(110, 19, 41, 0.85);
+        }
+
+        .seek__thumb {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgb(110, 19, 41);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* Button */
+        .player__btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            border: 0;
+            cursor: pointer;
+
+            background: rgb(110, 19, 41);
+            color: white;
+            font-weight: 900;
+            font-size: 18px;
+
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+        }
+
+        .player__btn:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 520px) {
+            .player--spotify {
+                grid-template-columns: 52px 1fr 52px;
+            }
+
+            .player__thumb,
+            .player__btn {
+                width: 52px;
+                height: 52px;
+            }
+        }
+
+        .player__btn,
+        .player__btn:visited,
+        .player__btn:active,
+        .player__btn:focus {
+            background: rgb(110, 19, 41);
+            color: #fff;
+        }
+
+        .player__icon {
+            display: grid;
+            place-items: center;
+        }
+
+        .player__icon svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
+            display: block;
+        }
+
+
+        /* ===== Top navigation (so it doesn't clash with bottom player) ===== */
+        .top-nav {
+            position: fixed;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            width: min(980px, calc(100% - 32px));
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            /* minimal padding */
+            padding: 6px 8px;
+            border-radius: 14px;
+
+            background: rgba(255, 224, 237, 0.86);
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.20);
+
+            backdrop-filter: blur(12px) saturate(120%);
+            -webkit-backdrop-filter: blur(12px) saturate(120%);
+
+            z-index: 2147483646;
+        }
+
+        .nav-spacer {
+            flex: 1;
+        }
+
+        .nav-btn {
+            border: 0;
+            background: rgb(110, 19, 41);
+            color: #fff;
+            font-weight: 900;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== Burn Book Theme — Option B (Sharpie Black + Pink Glow) ===== */
+        /* Paste this near the end of your CSS so it overrides earlier rules. */
+
+        :root {
+            --hotpink: #ff2d86;
+            --black: #111114;
+        }
+
+        /* Top nav buttons */
+        .nav-btn {
+            border: 0;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 900;
+
+            background: var(--black);
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.28),
+                0 0 0 2px rgba(255, 45, 134, 0.35);
+
+        }
+
+        .nav-btn:hover {
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.28),
+                0 0 0 2px rgba(255, 45, 134, 0.55),
+                0 0 18px rgba(255, 45, 134, 0.25);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* Bottom player container (keep your layout, just tweaks for theme) */
+        .player {
+            border: 1px solid rgba(0, 0, 0, 0.14);
+        }
+
+        /* Play/Pause button */
+        .player__btn {
+            border: 0;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 900;
+
+            background: var(--black) !important;
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.28),
+                0 0 0 2px rgba(255, 45, 134, 0.35);
+
+        }
+
+        .player__btn:hover {
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.28),
+                0 0 0 2px rgba(255, 45, 134, 0.55),
+                0 0 18px rgba(255, 45, 134, 0.25);
+        }
+
+        .player__btn:active {
+            transform: scale(0.99);
+        }
+
+        /* If you're using the custom scrubber (Option 2), theme it here */
+        .seek__track {
+            background: rgba(17, 17, 20, 0.18);
+        }
+
+        .seek__fill {
+            background: rgba(255, 45, 134, 0.85);
+        }
+
+        .seek__thumb {
+            background: var(--hotpink);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Optional: make times slightly darker for contrast */
+        .player__time {
+            color: rgba(0, 0, 0, 0.58);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Music UI -->
+
+
+    <audio id="bgMusic" preload="auto" loop playsinline>
+        <source src="song2.mp3" type="audio/mpeg">
+    </audio>
+    <div class="player player--spotify" id="player" aria-hidden="true">
+        <div class="player__thumb" aria-hidden="true"></div>
+
+        <div class="player__meta">
+            <div class="player__title">Can't take my eyes off of you</div>
+            <div class="player__artist">Heath Ledger</div>
+
+            <div class="player__progress">
+                <span class="player__time" id="curTime">0:00</span>
+                <div class="seek" id="seek" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="0"
+                    aria-valuenow="0" tabindex="0">
+                    <div class="seek__track">
+                        <div class="seek__fill" id="seekFill"></div>
+                        <div class="seek__thumb" id="seekThumb"></div>
+                    </div>
+                </div>
+                <span class="player__time" id="durTime">0:00</span>
+            </div>
+        </div>
+
+        <button class="player__btn" id="playBtn" type="button" aria-label="Play">
+            <span class="player__icon" id="playIcon" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div class="wrap">
+
+
+        <div id="book" aria-label="Flipbook">
+            <!-- Cover -->
+            <div class="page cover">
+                <img class="cover-img" src="burn_book_cover.png" alt="Burn Book cover" />
+            </div>
+
+            <!-- Pages 1..10 (edit freely) -->
+            <div class="page">
+                <div class="inner">
+                    <div class="num">01</div>
+                    <div class="collage" data-collage="I “hate” how easy it is to smile around you."></div>
+                    <div class="sub">Like… it should be illegal.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">02</div>
+                    <div class="collage" data-collage="I “hate” how you make ordinary moments feel special."></div>
+                    <div class="sub">Zero effort. Maximum effect.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">03</div>
+                    <div class="collage" data-collage="I “hate” that I remember little things you say."></div>
+                    <div class="sub">My brain filed you under: important.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">04</div>
+                    <div class="collage" data-collage="I “hate” how you’re basically impossible to replace."></div>
+                    <div class="sub">Unfair advantage.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">05</div>
+                    <div class="collage" data-collage="I “hate” how your laugh is contagious."></div>
+                    <div class="sub">I catch it instantly.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">06</div>
+                    <div class="collage" data-collage="I “hate” how time moves faster with you."></div>
+                    <div class="sub">Someone needs to fix that.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">07</div>
+                    <div class="collage" data-collage="I “hate” how good you look when you’re just being you."></div>
+                    <div class="sub">Rude.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">08</div>
+                    <div class="collage" data-collage="I “hate” that you live in my head rent-free."></div>
+                    <div class="sub">No lease. No warning.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">09</div>
+                    <div class="collage" data-collage="I “hate” how safe I feel talking to you."></div>
+                    <div class="sub">That’s rare. That’s you.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="num">10</div>
+                    <div class="collage" data-collage="I “hate” that I like you more than I planned to."></div>
+                    <div class="sub">And I’m not fighting it.</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="inner">
+                    <div class="collage" data-collage="The End 💌"></div>
+                    <div class="sub">Okay fine… I don’t hate you at all.</div>
+                </div>
+            </div>
+
+            <div class="page cover">
+                <img class="cover-img" src="burn_book_backcover.png" alt="Burn Book cover" />
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PageFlip library -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <script>
+        // ===== Flipbook init (FORCE single-page portrait) =====
+        const coverW = 1366;
+        const coverH = 2047;
+        const ratio = coverH / coverW; // height per 1 width (portrait)
+
+        function computePageSize() {
+            const maxW = Math.min(460, Math.floor(window.innerWidth * 0.90));
+            let w = Math.max(280, maxW);
+            let h = Math.round(w * ratio);
+
+            const maxH = Math.floor(window.innerHeight * 0.78);
+            if (h > maxH) {
+                h = maxH;
+                w = Math.round(h / ratio);
+            }
+            return { w, h };
+        }
+
+        const bookEl = document.getElementById("book");
+        const { w, h } = computePageSize();
+
+        const pageFlip = new St.PageFlip(bookEl, {
+            width: w,
+            height: h,
+            size: "fixed",        // ✅ helps keep single-page feel stable
+            showCover: true,
+            usePortrait: true,    // ✅ prefer portrait mode
+            mobileScrollSupport: true
+        });
+
+        pageFlip.loadFromHTML(document.querySelectorAll("#book .page"));
+
+        // ===== Ransom-note collage renderer =====
+        function hash32(str) {
+            let h = 2166136261;
+            for (let i = 0; i < str.length; i++) {
+                h ^= str.charCodeAt(i);
+                h = Math.imul(h, 16777619);
+            }
+            return h >>> 0;
+        }
+
+        function makeRng(seed) {
+            let s = seed >>> 0;
+            return () => {
+                // LCG
+                s = (Math.imul(1664525, s) + 1013904223) >>> 0;
+                return s / 4294967296;
+            };
+        }
+
+        function renderCollages() {
+            const blocks = document.querySelectorAll("[data-collage]");
+            blocks.forEach((el) => {
+                const text = (el.getAttribute("data-collage") || "").trim();
+                if (!text) return;
+
+                el.innerHTML = "";
+                const rng = makeRng(hash32(text));
+
+                const fonts = ["marker", "type", "bold", "pop"];
+                const colors = ["white", "black", "pink", "paper", "hotpink-bg", "hotpink-text"];
+                const sizes = ["small", "", "big", ""];
+
+                const words = text.split(/\s+/).filter(Boolean);
+
+                words.forEach((w, i) => {
+                    const span = document.createElement("span");
+                    const f = fonts[Math.floor(rng() * fonts.length)];
+                    const c = colors[Math.floor(rng() * colors.length)];
+                    const z = sizes[Math.floor(rng() * sizes.length)];
+
+                    span.className = ["cut", f, c, z].filter(Boolean).join(" ");
+
+                    // subtle rotation (deterministic)
+                    const rot = (rng() * 10 - 5).toFixed(2);
+                    span.style.setProperty("--r", `${rot}deg`);
+
+                    // occasional “torn” feeling via slight skew
+                    const skew = (rng() < 0.25) ? (rng() * 3 - 1.5).toFixed(2) : "0";
+                    span.style.transform = `rotate(${rot}deg) skewX(${skew}deg)`;
+
+                    span.textContent = w;
+                    el.appendChild(span);
+                });
+            });
+        }
+
+        // Run once on load
+        renderCollages();
+
+        // Re-render after flips (some browsers reflow transforms heavily)
+        pageFlip.on("flip", () => {
+            // tiny delay lets DOM settle
+            setTimeout(renderCollages, 30);
+        });
+
+        // ===== Music logic =====
+        // ===== Music logic (autoplay + UI always in sync) =====
+        // ===== Music: start ONLY when leaving cover, show player then =====
+        const audio = document.getElementById("bgMusic");
+        const player = document.getElementById("player");
+        const playBtn = document.getElementById("playBtn");
+        const curTimeEl = document.getElementById("curTime");
+        const durTimeEl = document.getElementById("durTime");
+
+        let playerRevealed = false;
+        let musicStarted = false;
+        let isSeeking = false;
+
+        const seek = document.getElementById("seek");
+        const seekFill = document.getElementById("seekFill");
+        const seekThumb = document.getElementById("seekThumb");
+
+        function setSeekUI() {
+            const dur = audio.duration || 0;
+            const cur = audio.currentTime || 0;
+
+            durTimeEl.textContent = formatTime(dur);
+            curTimeEl.textContent = formatTime(cur);
+
+            const pct = dur > 0 ? (cur / dur) * 100 : 0;
+            seekFill.style.width = `${pct}%`;
+            seekThumb.style.left = `${pct}%`;
+
+            seek.setAttribute("aria-valuemax", String(dur));
+            seek.setAttribute("aria-valuenow", String(cur));
+        }
+
+        function seekToClientX(clientX) {
+            const rect = seek.getBoundingClientRect();
+            const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+            const pct = rect.width ? (x / rect.width) : 0;
+            const dur = audio.duration || 0;
+            audio.currentTime = dur * pct;
+            setSeekUI();
+        }
+
+        let dragging = false;
+
+        seek.addEventListener("pointerdown", (e) => {
+            dragging = true;
+            seek.setPointerCapture(e.pointerId);
+            seekToClientX(e.clientX);
+        });
+
+        seek.addEventListener("pointermove", (e) => {
+            if (!dragging) return;
+            seekToClientX(e.clientX);
+        });
+
+        seek.addEventListener("pointerup", () => {
+            dragging = false;
+        });
+
+        audio.addEventListener("loadedmetadata", setSeekUI);
+        audio.addEventListener("timeupdate", () => {
+            if (!dragging) setSeekUI();
+        });
+
+
+        function revealPlayer() {
+            if (playerRevealed) return;
+            playerRevealed = true;
+            document.body.classList.add("player-visible");
+            player.setAttribute("aria-hidden", "false");
+        }
+
+        function formatTime(sec) {
+            if (!isFinite(sec) || sec < 0) return "0:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${String(s).padStart(2, "0")}`;
+        }
+
+        function syncPlayBtn() {
+            const paused = audio.paused || audio.ended;
+            playIcon.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+            playBtn.setAttribute("aria-label", paused ? "Play" : "Pause");
+        }
+
+
+        // Keep UI always correct (no “press twice”)
+        audio.addEventListener("play", syncPlayBtn);
+        audio.addEventListener("pause", syncPlayBtn);
+
+
+        async function safePlay() {
+            try {
+                audio.volume = 0.9;
+                await audio.play();
+            } catch {
+                // If something blocks it, user can hit Play after player is shown
+            }
+        }
+
+        function togglePlay() {
+            if (audio.paused) safePlay();
+            else audio.pause();
+        }
+
+        playBtn.addEventListener("click", togglePlay);
+        const playIcon = document.getElementById("playIcon");
+
+        const ICON_PLAY = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14l12-7z"></path>
+            </svg>`;
+
+        const ICON_PAUSE = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 5h5v14H6zM13 5h5v14h-5z"></path>
+            </svg>`;
+        syncPlayBtn();
+
+        // ✅ Start music on first flip OFF the cover
+        function currentIndex() {
+            try { return pageFlip.getCurrentPageIndex(); }
+            catch { return 0; }
+        }
+
+        async function startFromCoverGesture() {
+            if (musicStarted) return;
+            musicStarted = true;
+            revealPlayer();
+            await safePlay();
+        }
+
+        // 1) Works for clicks + swipes (gesture begins here)
+        bookEl.addEventListener("pointerdown", () => {
+            if (currentIndex() === 0) startFromCoverGesture();
+        }, { passive: true });
+
+        // 2) Extra safety: if user flips via buttons
+        // ✅ Start music on first flip OFF the cover
+        function getIndex() {
+            try { return pageFlip.getCurrentPageIndex(); }
+            catch { return 0; }
+        }
+
+        async function startFromCoverGesture() {
+            if (musicStarted) return;
+            musicStarted = true;
+            revealPlayer();
+            await safePlay();
+        }
+
+        // Works for clicks + swipes: just starts music, does not flip
+        bookEl.addEventListener("pointerdown", () => {
+            if (getIndex() === 0) startFromCoverGesture();
+        }, { passive: true });
+
+        // Buttons: SINGLE binding (no duplicates)
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        prevBtn.onclick = (e) => {
+            e?.stopPropagation?.();
+            pageFlip.flipPrev();
+        };
+
+        nextBtn.onclick = async (e) => {
+            e?.stopPropagation?.();
+            if (getIndex() === 0) await startFromCoverGesture();
+            pageFlip.flipNext();
+        };
+
+
+
+    </script>
+</body>
+
+</html>

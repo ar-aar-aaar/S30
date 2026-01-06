@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday 💌</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink: rgb(15, 15, 20);
+      --ink2: rgb(55, 55, 70);
+
+      /* keep your palette here */
+      --accent-rgb: 110, 19, 41;
+      --accent: rgb(var(--accent-rgb));
+
+      --card: rgba(255, 255, 255, 0.82);
+      --cardBorder: rgba(255, 255, 255, 0.35);
+
+      --shadow: rgba(0,0,0,0.28);
+      --radius: 22px;
+
+      /* Player palette inherits page */
+      --player-accent: var(--accent);
+      --player-bg: rgba(255,255,255,0.78);
+      --player-border: rgba(0,0,0,0.10);
+      --player-shadow: rgba(0,0,0,0.22);
+      --player-ink: rgba(15,15,20,0.92);
+      --player-muted: rgba(15,15,20,0.55);
+    }
+
+    *{ box-sizing:border-box; }
+
+    /* Keeps Android from doing weird theme tinting */
+    html{ color-scheme: light; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      padding: 24px;
+
+      /* Centered intro on load */
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      /* base is plain (no pattern until unlocked) */
+      background: #07070b;
+      overflow-x:hidden;
+    }
+
+    /* Once opened, move content near top */
+    body.opened{
+      justify-content:flex-start;
+      padding-top: 64px;
+      padding-bottom: 120px; /* so player won't cover letter ending */
+    }
+
+    /* ===== Hidden Background Layer (reveals on unlock) ===== */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+
+      background-image: url("pattern.png");
+      background-size: cover;
+      background-position: center;
+
+      opacity:0;
+      transition: opacity .7s ease;
+    }
+    .wash{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+
+      background: rgba(255, 255, 255, 0.18);
+      opacity:0;
+      transition: opacity .7s ease;
+    }
+
+    body.unlocked .bg{ opacity:1; }
+    body.unlocked .wash{ opacity:1; }
+
+    /* Foreground stage */
+    .stage{
+      width: min(860px, 100%);
+      position: relative;
+      z-index:3;
+    }
+
+    /* ===== Intro / Envelope ===== */
+    .intro{
+      display:grid;
+      place-items:center;
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .envelope-wrap{
+      width: min(560px, 100%);
+      text-align:center;
+    }
+
+    .envelope{
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      margin: 0 auto 18px auto;
+      position:relative;
+      border-radius: 18px;
+
+      /* slightly darker paper */
+      background: linear-gradient(180deg, #f3ede4 0%, #ece3d6 100%);
+      border: 1px solid rgba(0,0,0,0.12);
+
+      /* pop from background */
+      box-shadow:
+        0 34px 90px rgba(0,0,0,0.42),
+        0 2px 0 rgba(255,255,255,0.75) inset,
+        0 -10px 25px rgba(0,0,0,0.10) inset;
+
+      overflow:hidden;
+
+      /* 3D space for flap */
+      perspective: 1100px;
+      transform-style: preserve-3d;
+      perspective-origin: 50% 10%;
+    }
+
+    .env-folds{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0.55;
+      background:
+        linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%) bottom left / 55% 55% no-repeat,
+        linear-gradient(225deg, transparent 49.4%, rgba(0,0,0,0.12) 50%, transparent 50.6%) bottom right / 55% 55% no-repeat,
+        linear-gradient(to top, rgba(0,0,0,0.10), rgba(0,0,0,0.00) 55%) bottom / 100% 45% no-repeat;
+      z-index:2;
+    }
+
+    /* Flap (correct orientation) */
+    .flap{
+      position:absolute;
+      left:0;
+      right:0;
+      top:0;
+      height: 60%;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform .95s cubic-bezier(.2,.85,.2,1);
+      z-index:4;
+    }
+
+    .flap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(to bottom, #ffffff 0%, #e8dfd1 100%);
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.10);
+      backface-visibility: hidden;
+    }
+
+    .flap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(to bottom, #efe6d9 0%, #d9cfc0 100%);
+      transform: rotateX(180deg);
+      backface-visibility: hidden;
+    }
+
+    .seal-img{
+      position:absolute;
+      left:50%;
+      bottom: 30%;
+      transform: translateX(-50%);
+      width: 96px;
+      height: auto;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,0.22));
+      z-index:5;
+      pointer-events:none;
+    }
+
+    .intro h1{
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.2vw, 44px);
+      margin: 0 0 10px 0;
+      color: #ffffff;
+      letter-spacing:-0.5px;
+    }
+
+    .intro p{
+      margin: 0 0 18px 0;
+      color: rgba(255,255,255,0.82);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    /* Password form */
+    .pw-form{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 6px;
+    }
+
+    .pw-form input{
+      width: min(320px, 100%);
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      outline: none;
+      font-size: 15px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    }
+    .pw-form input::placeholder{ color: rgba(255,255,255,0.55); }
+
+    .pw-form button{
+      border:0;
+      cursor:pointer;
+      padding: 13px 16px;
+      border-radius: 14px;
+      background: var(--accent);
+      color:white;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+      transition: transform .15s ease;
+    }
+    .pw-form button:hover{ transform: translateY(-1px); }
+    .pw-form button:active{ transform: translateY(0px) scale(0.99); }
+
+    .pw-feedback{
+      margin-top: 12px;
+      min-height: 22px;
+      color: rgba(255,255,255,0.92);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .clues{
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:center;
+    }
+
+    .clues li{
+      width: min(520px, 100%);
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.88);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+      text-align:left;
+    }
+
+    .shake{ animation: shake .35s ease; }
+    @keyframes shake{
+      0%{ transform: translateX(0); }
+      20%{ transform: translateX(-6px); }
+      40%{ transform: translateX(6px); }
+      60%{ transform: translateX(-4px); }
+      80%{ transform: translateX(4px); }
+      100%{ transform: translateX(0); }
+    }
+
+    /* ===== Letter ===== */
+    .letter{
+      opacity:0;
+      transform: translateY(12px);
+      pointer-events:none;
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .card{
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      padding: clamp(18px, 4vw, 34px);
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--cardBorder);
+      box-shadow: 0 18px 60px var(--shadow);
+
+      backdrop-filter: blur(14px) saturate(120%);
+      -webkit-backdrop-filter: blur(14px) saturate(120%);
+    }
+
+    .card h2{
+      margin:0 0 10px 0;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(34px, 5vw, 52px);
+      line-height: 1.05;
+      color: var(--accent);
+      letter-spacing:-0.5px;
+    }
+
+    .subtitle{
+      margin: 0 0 18px 0;
+      color: var(--ink2);
+      font-size: 16px;
+    }
+
+    .card p{
+      margin: 0 0 14px 0;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .signature{
+      margin-top: 18px;
+      font-family: "Great Vibes", cursive;
+      font-size: 36px;
+      color: var(--accent);
+    }
+
+    /* ===== Opened State ===== */
+    body.opened .intro{
+      opacity:0;
+      transform: translateY(-6px);
+      pointer-events:none;
+    }
+
+    body.opened .flap{
+      transform: rotateX(-160deg);
+    }
+
+    body.opened .letter{
+      opacity:1;
+      transform: translateY(0);
+      pointer-events:auto;
+    }
+
+    body.openedDone .intro{ display:none; }
+
+    .hate-link{
+      color: var(--accent);
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+    .hate-link:hover{ opacity: 0.9; }
+
+    /* ===== Spotify-esque player ===== */
+    .player{
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%) translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+
+      width: min(980px, calc(100% - 28px));
+      padding: 12px;
+      border-radius: 18px;
+
+      background: var(--player-bg);
+      border: 1px solid var(--player-border);
+      box-shadow: 0 22px 60px var(--player-shadow);
+
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+
+      z-index: 2147483647 !important;
+      transition: opacity .25s ease, transform .25s ease;
+      transform-origin: center;
+
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent;
+    }
+
+    .player.is-visible{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .player--spotify{
+      display: grid;
+      grid-template-columns: 56px 1fr 56px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .player__thumb{
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.10);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.10);
+
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 100%);
+      position: relative;
+    }
+
+    .player__thumb::after{
+      content:"✨";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      font-size: 20px;
+      opacity: 0.85;
+    }
+
+    .player__title{
+      font-weight: 900;
+      color: var(--player-ink);
+      font-size: 14px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player__artist{
+      margin-top: 2px;
+      font-weight: 700;
+      color: var(--player-muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player__progress{
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .player__time{
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--player-muted);
+      text-align: center;
+    }
+
+    /* Custom scrubber (no native orange anywhere) */
+    .seek{
+      width: 100%;
+      height: 18px;
+      display:flex;
+      align-items:center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent;
+    }
+
+    .seek__track{
+      position: relative;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(var(--accent-rgb), 0.22);
+    }
+
+    .seek__fill{
+      position:absolute;
+      left:0;
+      top:0;
+      height: 6px;
+      border-radius: 999px;
+      width: 0%;
+      background: rgba(var(--accent-rgb), 0.85);
+    }
+
+    .seek__thumb{
+      position:absolute;
+      top: 50%;
+      left: 0%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--player-accent);
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+    }
+
+    .player__btn{
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      border: 0;
+      cursor: pointer;
+
+      background: var(--player-accent);
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent;
+    }
+
+    .player__btn:active{ transform: scale(0.99); }
+
+    .player__icon svg{
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+      display:block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 520px){
+      .player--spotify{ grid-template-columns: 52px 1fr 52px; }
+      .player__thumb, .player__btn{ width: 52px; height: 52px; }
+    }
+
+    
+  </style>
+</head>
+
+<body>
+  <!-- Hidden background revealed after correct password -->
+  <div class="bg" aria-hidden="true"></div>
+  <div class="wash" aria-hidden="true"></div>
+
+  <!-- Audio -->
+  <audio id="bgMusic" preload="auto" loop playsinline>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Spotify-esque player (hidden until unlock) -->
+  <div class="player player--spotify" id="player" aria-hidden="true">
+    <div class="player__thumb" aria-hidden="true"></div>
+
+    <div class="player__meta">
+      <div class="player__title">I Wanna Dance with Somebody</div>
+      <div class="player__artist">Whitney Houston</div>
+
+      <div class="player__progress">
+        <span class="player__time" id="curTime">0:00</span>
+
+        <div class="seek" id="seek" role="slider"
+             aria-label="Seek"
+             aria-valuemin="0"
+             aria-valuemax="0"
+             aria-valuenow="0"
+             tabindex="0">
+          <div class="seek__track">
+            <div class="seek__fill" id="seekFill"></div>
+            <div class="seek__thumb" id="seekThumb"></div>
+          </div>
+        </div>
+
+        <span class="player__time" id="durTime">0:00</span>
+      </div>
+    </div>
+
+    <button class="player__btn" id="playBtn" type="button" aria-label="Play">
+      <span class="player__icon" id="playIcon" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="stage">
+    <!-- Locked intro -->
+    <section class="intro" aria-label="Password gate">
+      <div class="envelope-wrap">
+        <div class="envelope" aria-hidden="true">
+          <div class="flap"></div>
+          <div class="env-folds"></div>
+          <img class="seal-img" src="wax_seal.png" alt="" />
+        </div>
+
+        <h1>Secret birthday letter 💌</h1>
+        <p>Enter the password to open it (no spoilers 😉).</p>
+
+        <form class="pw-form" id="pwForm" autocomplete="off">
+          <input id="pwInput" type="password" placeholder="Password…" aria-label="Password" />
+          <button type="submit">Unlock ✨</button>
+        </form>
+
+        <div class="pw-feedback" id="pwFeedback" aria-live="polite"></div>
+        <ul class="clues" id="cluesList" hidden></ul>
+      </div>
+    </section>
+
+    <!-- The letter -->
+    <section class="letter" aria-label="Birthday letter">
+      <main class="card">
+        <h2>Happy Birthday, [Name] 🎂</h2>
+        <p class="subtitle">Okay birthday legend… this one’s for you.</p>
+
+        <p>(Write your message here ✨)</p>
+
+        <div class="signature">— Ari</div>
+
+        <p>
+          all this because I hate you and these are
+          <a class="hate-link" href="10things.html" rel="noopener noreferrer">
+            10 things I hate about you
+          </a>
+        </p>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    // =========================
+    // ✅ Customize these:
+    // =========================
+    const PASSWORD = "somebody"; // <-- CHANGE THIS
+
+    // Up to 4 clues, revealed after each wrong attempt.
+    const CLUES = [
+      "Clue 1: It’s just one word.",
+      "Clue 2: It’s in the song title.",
+      "Clue 3: It’s the last word of the song title.",
+      "Clue 4: It rhymes with “everybody”… kind of 😄"
+    ];
+    // =========================
+
+    const pwForm = document.getElementById("pwForm");
+    const pwInput = document.getElementById("pwInput");
+    const pwFeedback = document.getElementById("pwFeedback");
+    const cluesList = document.getElementById("cluesList");
+
+    const normalize = (s) => (s ?? "").trim().toLowerCase();
+
+    let attempts = 0;
+
+    function addClue(index){
+      if (index < 0 || index >= CLUES.length) return;
+      cluesList.hidden = false;
+      const li = document.createElement("li");
+      li.textContent = CLUES[index];
+      cluesList.appendChild(li);
+    }
+
+    // ===== Spotify player controller (Android-safe icons) =====
+    (() => {
+      const audio = document.getElementById("bgMusic");
+      const player = document.getElementById("player");
+      const playBtn = document.getElementById("playBtn");
+      const playIcon = document.getElementById("playIcon");
+
+      const curTimeEl = document.getElementById("curTime");
+      const durTimeEl = document.getElementById("durTime");
+
+      const seek = document.getElementById("seek");
+      const seekFill = document.getElementById("seekFill");
+      const seekThumb = document.getElementById("seekThumb");
+
+      const ICON_PLAY = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l12-7z"></path>
+        </svg>`;
+      const ICON_PAUSE = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 5h5v14H6zM13 5h5v14h-5z"></path>
+        </svg>`;
+
+      let dragging = false;
+
+      function formatTime(sec){
+        if (!isFinite(sec) || sec < 0) return "0:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${String(s).padStart(2, "0")}`;
+      }
+
+      function syncPlayBtn(){
+        const paused = audio.paused || audio.ended;
+        playIcon.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+        playBtn.setAttribute("aria-label", paused ? "Play" : "Pause");
+      }
+
+      function setSeekUI(){
+        const dur = audio.duration || 0;
+        const cur = audio.currentTime || 0;
+
+        durTimeEl.textContent = formatTime(dur);
+        curTimeEl.textContent = formatTime(cur);
+
+        const pct = dur > 0 ? (cur / dur) * 100 : 0;
+        seekFill.style.width = `${pct}%`;
+        seekThumb.style.left = `${pct}%`;
+
+        seek.setAttribute("aria-valuemax", String(dur));
+        seek.setAttribute("aria-valuenow", String(cur));
+      }
+
+      function seekToClientX(clientX){
+        const rect = seek.getBoundingClientRect();
+        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        const pct = rect.width ? (x / rect.width) : 0;
+        const dur = audio.duration || 0;
+        audio.currentTime = dur * pct;
+        setSeekUI();
+      }
+
+      async function safePlay(){
+        try{
+          audio.volume = 0.9;
+          await audio.play();
+        } catch {
+          // If blocked, user can tap Play
+        }
+      }
+
+      function togglePlay(){
+        if (audio.paused) safePlay();
+        else audio.pause();
+      }
+
+      playBtn.addEventListener("click", togglePlay);
+
+      seek.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        seek.setPointerCapture(e.pointerId);
+        seekToClientX(e.clientX);
+      });
+      seek.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        seekToClientX(e.clientX);
+      });
+      seek.addEventListener("pointerup", () => { dragging = false; });
+
+      audio.addEventListener("play", syncPlayBtn);
+      audio.addEventListener("pause", syncPlayBtn);
+      audio.addEventListener("loadedmetadata", () => { setSeekUI(); syncPlayBtn(); });
+      audio.addEventListener("timeupdate", () => { if (!dragging) setSeekUI(); });
+
+      syncPlayBtn();
+      setSeekUI();
+
+      window.BirthdayPlayer = {
+        showPlayer(){
+          player.classList.add("is-visible");
+          player.setAttribute("aria-hidden", "false");
+        },
+        startMusic(){
+          return safePlay();
+        },
+        pauseMusic(){
+          audio.pause();
+        }
+      };
+    })();
+
+    async function unlockSequence(){
+      document.body.classList.add("unlocked");
+      document.body.classList.add("opened");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setTimeout(() => document.body.classList.add("openedDone"), 520);
+
+      // Show + start the bottom player (single source of truth)
+      BirthdayPlayer.showPlayer();
+      await BirthdayPlayer.startMusic();
+    }
+
+    pwForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const entered = normalize(pwInput.value);
+      if (!entered) {
+        pwFeedback.textContent = "Type it in first 😄";
+        return;
+      }
+
+      if (entered === normalize(PASSWORD)) {
+        pwFeedback.textContent = "Correct ✨";
+        pwInput.blur();
+        await unlockSequence();
+        return;
+      }
+
+      // Wrong password
+      attempts += 1;
+      pwFeedback.textContent = `Nope 😅 Try again. (${Math.min(attempts, 4)}/4 clues)`;
+
+      pwInput.classList.remove("shake");
+      void pwInput.offsetWidth;
+      pwInput.classList.add("shake");
+
+      if (attempts <= 4) addClue(attempts - 1);
+      else pwFeedback.textContent = "Nope 😅 That’s all the clues — but you’ll get it.";
+
+      pwInput.select();
+    });
+  </script>
+</body>
+</html>
