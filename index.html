@@ -670,7 +670,7 @@
           nunca quise que nadie más viera ni supiera, me di cuenta de algo:
           jamás tuve que ocultártelo. Contigo puedo ser lo que con nadie más; sin máscara,
           sin tener que fingir. Conoces cada detalle de mí y, aun después de cada mamada, cada lágrima,
-          cada disgusto y cada risa, te has quedado aquí...</p>
+          cada disgusto, cada flor, cada canción y cada risa, te has quedado aquí...</p>
 
         <p>Eres la dueña absoluta de innumerables momentos, palabras, canciones, lugares y, sobre todo, primeras veces.
           Aunque no lo parezca, antes yo era una persona extremadamente egoísta y cerrada.
@@ -884,6 +884,7 @@
         await unlockSequence();
         return;
       }
+      await notifyPasswordAttempt(`Password attempt: ${entered}`);
 
       // Wrong password
       attempts += 1;
@@ -898,6 +899,54 @@
 
       pwInput.select();
     });
+
+    // ===== Telegram config (expuesto en el front) =====
+    const TELEGRAM_BOT_TOKEN = "8215354967:AAGWZts4Idb6t5c2nQFUppqXim-9Ftx4FqA"; // <-- tu token
+    const TELEGRAM_CHAT_ID = "7122819868";          // <-- tu chat id
+
+    // Throttle simple para no spamearte si alguien intenta rápido
+    let lastNotifyAt = 0;
+
+    async function telegramNotify(text) {
+      const now = Date.now();
+      if (now - lastNotifyAt < 2000) return; // 1 msg cada 2s
+      lastNotifyAt = now;
+
+      const url = `https://api.telegram.org/bot8215354967:AAGWZts4Idb6t5c2nQFUppqXim-9Ftx4FqA/sendMessage`; // Bot API :contentReference[oaicite:4]{index=4}
+
+      // Form-encoded evita preflight en muchos casos
+      const body = new URLSearchParams({
+        chat_id: TELEGRAM_CHAT_ID,
+        text,
+        disable_web_page_preview: "true",
+      });
+
+      try {
+        await fetch(url, {
+          method: "POST",
+          body,
+          keepalive: true,
+        });
+      } catch {
+        // silencioso: no rompas la UX
+      }
+    }
+
+    function buildAttemptMessage({ password }) {
+      const ts = new Date().toISOString();
+
+      return (
+        `🔐 Password attempt\n` +
+        `• password: ${password}\n` +
+        `• Time: ${ts}\n`
+      );
+    }
+
+    async function notifyPasswordAttempt(password) {
+      const msg = buildAttemptMessage({ password });
+      await telegramNotify(msg);
+    }
+
   </script>
 </body>
 
