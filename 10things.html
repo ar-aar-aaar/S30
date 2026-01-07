@@ -747,12 +747,76 @@
         .player__time {
             color: rgba(0, 0, 0, 0.58);
         }
+
+        .scrap-s--sticker {
+            display: inline-block;
+            font-size: 0.84em;
+            font-weight: 800;
+            padding: 0.10em 0.45em;
+            margin: 0 0.08em;
+            border-radius: 0.6em;
+            background: rgba(255, 255, 255, 0.75);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transform: rotate(-1deg);
+        }
+
+        /* "cinta" arriba (muy scrapbook) */
+        .scrap-s--sticker::before {
+            content: "";
+            position: absolute;
+            width: 72%;
+            height: 0.42em;
+            left: 14%;
+            top: -0.22em;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 0.35em;
+        }
+
+        .s-letter {
+            display: inline-block;
+            margin: 0 .04em;
+            line-height: 1;
+            transform-origin: center;
+        }
+
+        .s-letter--A {
+            color: #ff0033;
+            /* rojo intenso */
+            font-size: 1.25em;
+            font-family: "Great Vibes", "Playfair Display", cursive;
+            text-shadow:
+                0 0 6px rgba(255, 0, 51, .85),
+                0 0 16px rgba(255, 0, 51, .55),
+                0 0 28px rgba(255, 0, 51, .35);
+            animation: heartBeatGlow 1.25s infinite ease-in-out;
+        }
+
+        @keyframes heartBeatGlow {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(-1deg);
+                filter: drop-shadow(0 0 0 rgba(255, 0, 51, 0));
+            }
+
+            40% {
+                transform: scale(1.18) rotate(1deg);
+            }
+
+            55% {
+                transform: scale(1.06) rotate(-0.5deg);
+            }
+
+            70% {
+                transform: scale(1.22) rotate(0.7deg);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Music UI -->
-
 
     <audio id="bgMusic" preload="auto" loop playsinline>
         <source src="song2.mp3" type="audio/mpeg">
@@ -786,86 +850,127 @@
 
 
         <div id="book" aria-label="Flipbook">
-            <!-- Cover -->
             <div class="page cover">
                 <img class="cover-img" src="burn_book_cover.png" alt="Burn Book cover" />
             </div>
 
-            <!-- Pages 1..10 (edit freely) -->
             <div class="page">
                 <div class="inner">
                     <div class="num">01</div>
-                    <div class="collage" data-collage="I “hate” how easy it is to smile around you."></div>
-                    <div class="sub">Like… it should be illegal.</div>
+                    <div class="collage" data-collage="Odio tu maldita forma de ser."></div>
+                    <div class="sub">Porque solo tú tienes esa luz natural que ilumina cualquier
+                        lugar al que vas, dejando una huella que solo tú posees.
+                        <br>
+                        Odio que seas tan genuina, porque me dejas sin defensas y
+                        me obligas a admirarte en un silencio que me llena el alma.
+                    </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">02</div>
-                    <div class="collage" data-collage="I “hate” how you make ordinary moments feel special."></div>
-                    <div class="sub">Zero effort. Maximum effect.</div>
+                    <div class="collage" data-collage="Odio tu enorme apetito sin fondo."></div>
+                    <div class="sub">Porque cada que salimos a comer la comida sabe mejor
+                        contando los chismes que nos tenemos.
+                        <br>
+                        Solo para al terminar tener que ir por un postre,
+                        ese otro antojo dulce que equivale a la dulzura de tu ser.
+                    </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">03</div>
-                    <div class="collage" data-collage="I “hate” that I remember little things you say."></div>
-                    <div class="sub">My brain filed you under: important.</div>
+                    <div class="collage" data-collage="Odio tu aroma tan distintivo y delicioso."></div>
+                    <div class="sub">Es mi mayor adicción, así como mi perdición, </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">04</div>
-                    <div class="collage" data-collage="I “hate” how you’re basically impossible to replace."></div>
-                    <div class="sub">Unfair advantage.</div>
+                    <div class="collage" data-collage="Odio tu frialdad tan congelante."></div>
+                    <div class="sub">Esa maldita muralla de hielo con el que te proteges,
+                        porque sé que es solo tu método de defensa para evitar ser lastimada.
+                        <br>
+                        Sin embargo contigo lo último que siento es frío, ya que con todo y esa frialdad
+                        me haces sentir el calor más reconfortante con tu presencia.
+                    </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">05</div>
-                    <div class="collage" data-collage="I “hate” how your laugh is contagious."></div>
-                    <div class="sub">I catch it instantly.</div>
+                    <div class="collage" data-collage="Odio que seas tan consentida y caprichosa."></div>
+                    <div class="sub">Porque me duele darme cuenta de que siempre voy a intentar superarme
+                        para cumplir cada uno de tus deseos y caprichos.
+                        <br>
+                        El hecho de que hagas berrinche cuando quieres algo me hace querer dártelo con tal
+                        de ver tu maldita sonrisa que me da ganas de hacerte sonreír cada día que pueda.
+                    </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">06</div>
-                    <div class="collage" data-collage="I “hate” how time moves faster with you."></div>
-                    <div class="sub">Someone needs to fix that.</div>
+                    <div class="collage" data-collage="Odio no poder verte tan seguido."></div>
+                    <div class="sub">.</div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">07</div>
-                    <div class="collage" data-collage="I “hate” how good you look when you’re just being you."></div>
-                    <div class="sub">Rude.</div>
+                    <div class="collage" data-collage="Odio que nos conozcamos tan bien."></div>
+                    <div class="sub">.</div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">08</div>
-                    <div class="collage" data-collage="I “hate” that you live in my head rent-free."></div>
-                    <div class="sub">No lease. No warning.</div>
+                    <div class="collage" data-collage="Odio tu independencia."></div>
+                    <div class="sub">.</div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">09</div>
-                    <div class="collage" data-collage="I “hate” how safe I feel talking to you."></div>
-                    <div class="sub">That’s rare. That’s you.</div>
+                    <div class="collage" data-collage="Odio tu piel tan suave."></div>
+                    <div class="sub">.</div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
                     <div class="num">10</div>
-                    <div class="collage" data-collage="I “hate” that I like you more than I planned to."></div>
-                    <div class="sub">And I’m not fighting it.</div>
+                    <div class="collage" data-collage="Odio que no te pueda odiar."></div>
+                    <div class="sub">
+                        Ni tu voz dejar de soñar.
+                        <br>
+                        Pues aunque mi alma se empiece a quebrar.
+                        <br>
+                        Preferiría mil veces por ti naufragar.
+                        <br>
+                        Que obligarme a dejarte de amar.
+                    </div>
                 </div>
             </div>
             <div class="page">
                 <div class="inner">
-                    <div class="collage" data-collage="The End 💌"></div>
-                    <div class="sub">Okay fine… I don’t hate you at all.</div>
+                    <div class="collage" data-collage="Te odio tanto que no puedo estar en paz"></div>
+                    <div class="sub">
+                        Weno, espero que este pequeño detalle muy X haya sido de su agrado señorita.
+                        <br>
+                        Eres mi <span class="scrap-s--sticker">Sueño</span> más recurrente y mi
+                        <span class="scrap-s--sticker">Salvación</span> día con día;
+                        el <span class="scrap-s--sticker">Suspiro</span> que nace al verte y
+                        el <span class="scrap-s--sticker">Sentido</span> que le da orden a mi caos.
+                        Eres mi <span class="scrap-s--sticker">Santuario</span> y
+                        mi <span class="scrap-s--sticker">Serenidad</span>;
+                        mi <span class="scrap-s--sticker">Sombra</span> y mi luz.
+                        Eres el <span class="scrap-s--sticker">Símbolo</span> imborrable de mi devoción y
+                        el <span class="scrap-s--sticker">Sortilegio</span> que me mantiene cautiva.
+                        Eres, simplemente, mi mejor <span class="scrap-s--sticker">Sensación</span>.
+                        Tú eres mi principio, mi fin... y siempre serás mi <span class="s-letter s-letter--A">S</span>
+                        favorita.
+                    </div>
                 </div>
             </div>
 
@@ -903,9 +1008,9 @@
         const pageFlip = new St.PageFlip(bookEl, {
             width: w,
             height: h,
-            size: "fixed",        // ✅ helps keep single-page feel stable
+            size: "fixed",
             showCover: true,
-            usePortrait: true,    // ✅ prefer portrait mode
+            usePortrait: true,
             mobileScrollSupport: true
         });
 
@@ -977,8 +1082,7 @@
         });
 
         // ===== Music logic =====
-        // ===== Music logic (autoplay + UI always in sync) =====
-        // ===== Music: start ONLY when leaving cover, show player then =====
+
         const audio = document.getElementById("bgMusic");
         const player = document.getElementById("player");
         const playBtn = document.getElementById("playBtn");
@@ -1061,7 +1165,6 @@
         }
 
 
-        // Keep UI always correct (no “press twice”)
         audio.addEventListener("play", syncPlayBtn);
         audio.addEventListener("pause", syncPlayBtn);
 
@@ -1130,22 +1233,6 @@
         bookEl.addEventListener("pointerdown", () => {
             if (getIndex() === 0) startFromCoverGesture();
         }, { passive: true });
-
-        // Buttons: SINGLE binding (no duplicates)
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-
-        prevBtn.onclick = (e) => {
-            e?.stopPropagation?.();
-            pageFlip.flipPrev();
-        };
-
-        nextBtn.onclick = async (e) => {
-            e?.stopPropagation?.();
-            if (getIndex() === 0) await startFromCoverGesture();
-            pageFlip.flipNext();
-        };
-
 
 
     </script>
