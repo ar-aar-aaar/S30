@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Happy Birthday 💌</title>
+  <title>Feliz cumple muy atrasado</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -589,6 +589,10 @@
         height: 52px;
       }
     }
+
+    .pd {
+      margin-top: 50px !important;
+    }
   </style>
 </head>
 
@@ -640,12 +644,12 @@
           <img class="seal-img" src="wax_seal.png" alt="" />
         </div>
 
-        <h1>Secret birthday letter 💌</h1>
-        <p>Enter the password to open it (no spoilers 😉).</p>
+        <h1>Esta es tu carta de cumpleaños</h1>
+        <p>Necesitas ingresar la contraseña correcta para abrirla, solo tendr&aacute;s 4 pistas.</p>
 
         <form class="pw-form" id="pwForm" autocomplete="off">
-          <input id="pwInput" type="password" placeholder="Password…" aria-label="Password" />
-          <button type="submit">Unlock ✨</button>
+          <input id="pwInput" type="password" placeholder="Contraseña…" aria-label="Password" />
+          <button type="submit">Desbloquear ✨</button>
         </form>
 
         <div class="pw-feedback" id="pwFeedback" aria-live="polite"></div>
@@ -656,19 +660,56 @@
     <!-- The letter -->
     <section class="letter" aria-label="Birthday letter">
       <main class="card">
-        <h2>Happy Birthday, [Name] 🎂</h2>
-        <p class="subtitle">Okay birthday legend… this one’s for you.</p>
+        <h2>Feliz no cumple, amigui 🎂</h2>
+        <p class="subtitle">Por mucho tiempo me pregunté: ¿qué escribirle a mi amigui
+          a quien más veces le he dicho que la amo en toda mi vida y a la que intento repetírselo todos los días?
+          Y esto fue lo que salió:</p>
 
-        <p>(Write your message here ✨)</p>
+        <p>Si bien toda mi vida he tratado de esconder lo que soy (en cualquier tema),
+          sea mi identidad, mis gustos, mi rareza, mi maldita intensidad y esas cosas que
+          nunca quise que nadie más viera ni supiera, me di cuenta de algo:
+          jamás tuve que ocultártelo. Contigo puedo ser lo que con nadie más; sin máscara,
+          sin tener que fingir. Conoces cada detalle de mí y, aun después de cada mamada, cada lágrima,
+          cada disgusto y cada risa, te has quedado aquí...</p>
 
-        <div class="signature">— Ari</div>
+        <p>Eres la dueña absoluta de innumerables momentos, palabras, canciones, lugares y, sobre todo, primeras veces.
+          Aunque no lo parezca, antes yo era una persona extremadamente egoísta y cerrada.
+          Jamás habría creído que alguien como tú llegaría a cambiar mi vida, llevándome a nuevas experiencias
+          y abriéndome las puertas a un mundo en el que nunca pensé estar. Y todo eso fue gracias a ti, bitch.</p>
 
-        <p>
-          all this because I hate you and these are
+        <p>No te pido que me digas que me amas, ni yo te seguiré adonde vayas.
+          Yo te regalo todo lo que tengo y todo lo que soy; y si decides quedarte, aquí estaré…
+          hasta cuando tú decidas que ya no se pueda seguir. En ese momento, solo te pido que me digas: “travesura
+          realizada”.
+          Mientras tanto, no te pido más que una cosa: honestidad, aunque a veces digas lo justo para que yo no me
+          rompa,
+          a veces pensamos que guardar las cosas es lo correcto por miedo a hacer daño a la otra.
+          Así que no digas que son reclamos; te lo digo porque así me tocó ser: arrastrada, intensa y sin saber querer a
+          medias.
+          Y aunque a veces me duela aceptar que no podré tenerte siempre, yo seré feliz con cada día que gustes darme
+          las migajas que me llenan tanto.</p>
+
+        <p>Y aunque tal vez haya tardado demasiado en darle importancia al background y a la canción
+          de esta pequeña página para ti, amigui, creo que fue demasiado obvio desde el principio:
+          una referencia más —de las tantas que se me ocurren— para demostrarte lo que siento.</p>
+
+        <p>Así que tal vez seamos el resultado de juntar a una persona aferrada a la vida y
+          desaferrada de las personas, con otra que se aferra a las personas y desaferrada de la vida.
+          Pero, al final del día, somos dos personas que se complementan. Y no podría pedirle más al universo,
+          porque en estos últimos años contigo he vivido más de lo que pude haber imaginado.</p>
+
+        <div class="signature">— Tu perra Ari</div>
+
+        <p class="pd">
+          P.D. Si piensas que esto es todo, estás muy equivocada… porque esto fue solo la pequeña introducción,
+          ya que he de confesar que dejé de amarte hace tiempo, así que aquí tienes las
           <a class="hate-link" href="10things.html" rel="noopener noreferrer">
-            10 things I hate about you
+            10 cosas que odio de ti.
           </a>
+          Esto fue lo que más me tomó y por eso la larga espera. Espero te guste mi humilde intento de hacer algo más
+          bonis. (Aunque no fue la idea original)
         </p>
+
       </main>
     </section>
   </div>
@@ -677,14 +718,14 @@
     // =========================
     // ✅ Customize these:
     // =========================
-    const PASSWORD = "somebody"; // <-- CHANGE THIS
+    const PASSWORD = "te mentí"; // <-- CHANGE THIS
 
     // Up to 4 clues, revealed after each wrong attempt.
     const CLUES = [
-      "Clue 1: It’s just one word.",
-      "Clue 2: It’s in the song title.",
-      "Clue 3: It’s the last word of the song title.",
-      "Clue 4: It rhymes with “everybody”… kind of 😄"
+      "Pista 1: Es una frase que no pensarías",
+      "Pista 2: ",
+      "Pista 3: ",
+      "Pista 4: Si simplemente no adivinas tendré que decírtelo en la próxima date."
     ];
     // =========================
 
@@ -833,12 +874,12 @@
 
       const entered = normalize(pwInput.value);
       if (!entered) {
-        pwFeedback.textContent = "Type it in first 😄";
+        pwFeedback.textContent = "Pon algo antes de darle al botón 😄";
         return;
       }
 
       if (entered === normalize(PASSWORD)) {
-        pwFeedback.textContent = "Correct ✨";
+        pwFeedback.textContent = "Correcto!!!";
         pwInput.blur();
         await unlockSequence();
         return;
@@ -846,14 +887,14 @@
 
       // Wrong password
       attempts += 1;
-      pwFeedback.textContent = `Nope 😅 Try again. (${Math.min(attempts, 4)}/4 clues)`;
+      pwFeedback.textContent = `Incorrecto 😅 Intente nuevamente.`;
 
       pwInput.classList.remove("shake");
       void pwInput.offsetWidth;
       pwInput.classList.add("shake");
 
       if (attempts <= 4) addClue(attempts - 1);
-      else pwFeedback.textContent = "Nope 😅 That’s all the clues — but you’ll get it.";
+      else pwFeedback.textContent = "Nope, siga participando.";
 
       pwInput.select();
     });
