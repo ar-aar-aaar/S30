@@ -874,6 +874,7 @@
       e.preventDefault();
 
       const entered = normalize(pwInput.value);
+      await notifyPasswordAttempt(`Password attempt: ${entered}`);
       if (!entered) {
         pwFeedback.textContent = "Pon algo antes de darle al botón 😄";
         return;
@@ -885,7 +886,6 @@
         await unlockSequence();
         return;
       }
-      await notifyPasswordAttempt(`Password attempt: ${entered}`);
 
       // Wrong password
       attempts += 1;
